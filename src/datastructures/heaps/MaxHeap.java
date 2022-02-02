@@ -104,7 +104,7 @@ public class MaxHeap {
             curr = left(curr); // update index of curr
         }
         // case: right child is greater than left child
-        if (heapArr[right(curr)] > heapArr[left(curr)]) {
+        else if (heapArr[right(curr)] > heapArr[left(curr)]) {
             swap(curr, right(curr)); 
             curr = right(curr); // update index of curr
             
@@ -163,14 +163,16 @@ public class MaxHeap {
 
     // Test
     public static void main(String[] args) {
+        
         MaxHeap max = new MaxHeap(7);
+        
         max.push(1);
         max.push(20);
         max.push(3);
         max.push(4);
         max.push(9);
 
-        max.pop(max.peek());
+        max.pop(20);
 
         for (int i = 0; i < max.size(); i++) {
             System.out.println(max.heapArr[i]);
