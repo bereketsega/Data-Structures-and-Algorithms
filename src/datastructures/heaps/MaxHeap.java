@@ -65,10 +65,18 @@ public class MaxHeap {
 
     }
 
+    /**
+     * returns the root of the heap
+     * @return the max element of the heap
+     */
     public int peek() {
         return heapArr[0];
     }
 
+    /**
+     * allows to keep the max heap properties
+     * @param index the node where we start checking
+     */
     private void maxHeapify(int index){
         
         // heapify upwards
