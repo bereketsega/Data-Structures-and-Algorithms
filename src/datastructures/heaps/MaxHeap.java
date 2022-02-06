@@ -79,37 +79,30 @@ public class MaxHeap {
      */
     private void maxHeapify(int index){
         
-        // heapify upwards
+        int max = index;
 
-        int curr = index; // to traverse
-        // move up curr until its no longer greater than its parent
-        while (heapArr[curr] > heapArr[parent(curr)]) {
-            swap(parent(curr), curr); 
-            curr = parent(curr); // update index of curr
-        }
+        int left = left(index); 
+        int right = right(index); 
 
-        // heapify downwards
-
-        // case: curr node has no children 
-        if (left(curr) > size || right(curr) > size) {
+        // index out of bounds
+        if (left >= size || right >= size) {
             return;
         }
-        // case : curr node is in expected position
-        if (heapArr[curr] >= heapArr[left(curr)] && heapArr[curr] >= heapArr[right(curr)] ) {
-            return;
+        // when left child is greater than parent node
+        if (heapArr[left] > heapArr[max]) {
+            max = left;
         }
-        // case: left child is greater than right child
-        if (heapArr[left(curr)] > heapArr[right(curr)]) {
-            swap(curr, left(curr)); 
-            curr = left(curr); // update index of curr
+        // when right child is greater than both parent and left child nodes
+        if (heapArr[right] > heapArr[max]) {
+            max = right;
         }
-        // case: right child is greater than left child
-        else if (heapArr[right(curr)] > heapArr[left(curr)]) {
-            swap(curr, right(curr)); 
-            curr = right(curr); // update index of curr
-            
+        // if any of the childrens are greater than parent node
+        if (max != index) {
+            // swap the max of left and right with parent node
+            swap(index, max);
+            // recurse until index out of bound or parent is max
+            maxHeapify(max);
         }
-        maxHeapify(curr); // recurse until nodes are in their expected positions
 
     }
 
