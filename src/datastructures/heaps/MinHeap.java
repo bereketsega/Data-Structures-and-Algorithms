@@ -53,34 +53,30 @@ public class MinHeap {
      */
     public void minHeapify(int index) {
 
-        // upwards
-        int curr = index;
-        while(heapArr[curr] < heapArr[parent(curr)]) {
-            swap(parent(curr), curr);
-            curr = parent(curr); // update index of curr
-        }
+        int min = index;
 
-        // downwards
-        if (left(curr) >= size || right(curr) >= size) { // no child found
+        int left = left(index); 
+        int right = right(index); 
+
+        // index out of bounds
+        if (left >= size || right >= size) {
             return;
         }
-
-        // node is less than both of its children
-        if (heapArr[index] <= heapArr[left(index)] && heapArr[index] <= heapArr[right(index)]) {  
-            return;
+        // when left child is less than parent node
+        if (heapArr[left] < heapArr[min]) {
+            min = left;
         }
-        // case: left child is less than right child
-        if (heapArr[left(curr)] < heapArr[right(curr)]) {
-            swap(curr, left(curr)); 
-            curr = left(curr); // update index of curr
+        // when right child is less than both parent and left child nodes
+        if (heapArr[right] < heapArr[min]) {
+            min = right;
         }
-        // case: right child is less than left child
-        else if (heapArr[right(curr)] < heapArr[left(curr)]) {
-            swap(curr, right(curr)); 
-            curr = right(curr); // update index of curr
+        // if any of the childrens are less than parent node
+        if (min != index) {
+            // swap the min of left and right with parent node
+            swap(index, min);
+            // recurse until index out of bound or parent is min
+            minHeapify(min);
         }
-
-        minHeapify(curr); // recurse until we meet the min properties
 
     }
 
