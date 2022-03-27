@@ -8,30 +8,26 @@ package algorithms.sorting;
 public class InsertionSort {
 
     /**
-     * sorts an array by bringing the min element to its position
+     * sorts an array by bringing an element to its position
      * T/S : O(n^2)/O(1)
      * 
      * @param arr the array to be sorted
      */
     public static void insertionSort(int[] arr) {
         
-        for (int i = 0; i < arr.length-1; i++) {
+        for (int i = 1; i < arr.length; i++) {
             
-            int idx = i+1;
-            int min = arr[idx];
+            int min = arr[i];
             
             for (int j = i; j >= 0; j--) {
-                // when next element is greater
-                if (arr[j] <= min) {
-                    continue;
-                }
+
                 // when next element is lesser
                 if (min < arr[j]) {
                     // shift min element left
                     int temp = arr[j];
-                    arr[j] = arr[idx];
-                    arr[idx] = temp;
-                    idx--;
+                    arr[j] = arr[i];
+                    arr[i] = temp;
+                    i--;
                 }
                 
             }
