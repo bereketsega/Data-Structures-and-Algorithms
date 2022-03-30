@@ -51,43 +51,38 @@ public class MergeSort {
      */
     public static int[] merge(int[] left, int[] right) {
 
-        int[] res = new int[left.length + right.length]; // stores the sorted array
+        // length of both arrays
+        int leftLen = left.length;
+        int rightLen = right.length;
 
-        int leftP, rightP, resP; // left, right, and res arrays' index pointers
-        leftP = rightP = resP = 0;
+        int[] sorted = new int[leftLen + rightLen]; // to store the sorted array
 
-        // elements exist in either left or right subarrays 
-        while (leftP < left.length || rightP < right.length) {
+        int lI = 0, rI = 0, sI = 0; // left, right, and sorted arrays' index pointers
 
-            // case: elements exist in both left and right subarrays 
-            if (leftP < left.length && rightP < right.length) {
+        // elements exist in both left and right subarrays 
+        while (lI < leftLen && rI < rightLen) {
 
-                // case: left element is less than right element
-                if (left[leftP] < right[rightP]) {
-                    res[resP++] = left[leftP++];
-                }
-                // case: right element is less than left element
-                else if (right[rightP] < left[leftP]) {
-                    res[resP++] = right[rightP++]; 
-                }
-                // case: left and right element are equal
-                else {
-                    res[resP++] = left[leftP++];
-                    res[resP++] = right[rightP++];
-                }
-
+            // case: left element is less than right element
+            if (left[lI] < right[rI]) {
+                sorted[sI++] = left[lI++]; // add left element into sorted array
             }
-            // case: elements exist only in left subarray
-            else if (leftP < left.length) {
-                res[resP++] = left[leftP++]; 
-            }
-            // case: element exist only in right subarray
-            else if (rightP < right.length) {
-                res[resP++] = right[rightP++]; 
+            // case: right element is either equal or less than left element
+            else {
+                sorted[sI++] = right[rI++]; // add right element into sorted array
             }
         }
 
-        return res;
+        // add all element of left array if exist
+        while (lI < leftLen) {
+            sorted[sI++] = left[lI++];
+        }
+        
+        // add all element of right array if exist
+        while (rI < rightLen) {
+            sorted[sI++] = right[rI++];
+        }
+
+        return sorted;
 
     }
 
