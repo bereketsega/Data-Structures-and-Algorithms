@@ -17,20 +17,16 @@ public class InsertionSort {
         
         for (int i = 1; i < arr.length; i++) {
             
-            int min = arr[i];
+            int key = arr[i]; // the current element to be inserted 
+            int j = i - 1; // index of left of key
             
-            for (int j = i; j >= 0; j--) {
-
-                // when next element is lesser
-                if (min < arr[j]) {
-                    // shift min element left
-                    int temp = arr[j];
-                    arr[j] = arr[i];
-                    arr[i] = temp;
-                    i--;
-                }
-                
+            // insert until j index out of bound or left of key is greater than key
+            while ( j > -1 && arr[j] > key) {
+                //shift right since j'th element is > key
+                arr[j+1] = arr[j];
+                j--; // move left to compare to key
             }
+            arr[j+1] = key; // final position of key
         }
 
     }
