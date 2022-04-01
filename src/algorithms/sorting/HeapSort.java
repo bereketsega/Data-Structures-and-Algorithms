@@ -11,27 +11,15 @@ public class HeapSort {
      * sorts a heap built from array
      * @param arr the heap array
      */
-    private static void sort(int[] arr) {
-        int size = arr.length-1;
-        // swap head of heap with last node until size = 0
-        while (size >= 0) {
-            pop(arr, size); // replace head with tail of heap
-            size--;
-            heapify(arr, size, 0); // keeps heap property
-            
-        }
-    }
+    private static void sort(int[] arr, int n) {
+        
+        for (int i = n-1; i > 0; i--) {
+            // move head to the end
+            swap(arr, i, 0);
 
-    /**
-     * swaps head element with right most node
-     * @param arr the array we are swapping elements
-     * @param size last elements in the array
-     */
-    private static void pop(int[] arr, int size) {
-        // swap
-        int temp = arr[0];
-        arr[0] = arr[size];
-        arr[size] = temp;
+            // keep heap property
+            heapify(arr, i-1, 0);
+        }
     }
     
     /**
@@ -40,59 +28,70 @@ public class HeapSort {
      * @param arr the array to be sorted
      */
     public static void heapSort(int[] arr) {
+        int n = arr.length;
+
         // build a heap from arr
-        buildHeap(arr);
+        buildHeap(arr, n);
 
         // sort the heap
-        sort(arr);
+        sort(arr, n);
     }
 
     /**
      * builds max heap from an array
      * @param arr the array to be a heap
      */
-    private static void buildHeap(int[] arr) {
+    private static void buildHeap(int[] arr, int n) {
 
         // build heap 
-        for (int i = arr.length / 2 - 1; i >= 0; i--) {
-                heapify(arr, arr.length-1, i);
+        for (int i = (n / 2) - 1; i >= 0; i--) {
+            heapify(arr, n, i);
         }
     }
 
     /**
      * swaps index1 with index2 elements
-     * @param parent first index
-     * @param child second index
+     * @param i1 first index
+     * @param i2 second index
      */
-    private static void swap(int[] arr, int parent, int child) {
-        int temp = arr[parent];
+    private static void swap(int[] arr, int i1, int i2) {
+        int temp = arr[i1];
 
-        arr[parent] = arr[child];
-        arr[child] = temp;
+        arr[i1] = arr[i2];
+        arr[i2] = temp;
     }
 
-    private static void heapify(int[] arr, int size, int index) {
+    /**
+     * builds a max heap 
+     * 
+     * @param arr the array the max heap to be built on
+     * @param n length of the array
+     * @param i the index to heapify
+     */
+    private static void heapify(int[] arr, int n, int i) {
         
-        int max = index;
+        int root = i;
+        int left = (2*i)+1; // left child of root node
+        int right = (2*i)+2; // right child of root node
 
-        int left = (2*index)+1; // left child of index node
-        int right = (2*index)+2; // right child of index node
+        // check if left child is greater than root 
+        if (left <= n && arr[left] > arr[root]) {
+            root = left;
+        }
 
-        // when left child is greater than parent node
-        if (left <= size && arr[left] > arr[max]) {
-            max = left;
+        // check if right child is greater than either left or root 
+        if (right <= n && arr[right] > arr[root]) {
+            root = right;
         }
-        // when right child is greater than both parent and left child nodes
-        if (right <= size && arr[right] > arr[max]) {
-            max = right;
-        }
-        // if any of the childrens are greater than parent node
-        if (max != index) {
+
+        // check if root node is no longer the max
+        if (root != i) {
             // swap the max of left and right with parent node
-            swap(arr, index, max);
-            // recurse until index out of bound or parent is max
-            heapify(arr, size, max);
+            swap(arr, root, i);
+            // heapify until index out of bound or parent is max
+            heapify(arr, n, root);
         }
+
     }
 
     // Test
@@ -100,7 +99,8 @@ public class HeapSort {
         int[] arr = {51,21,46,7,2,73,22};
         heapSort(arr);
         for (int i = 0; i < arr.length; i++) {
-            System.out.println(arr[i]);
+            System.out.print(arr[i]+ " ");
         }
+        System.out.println();
     }
 }
