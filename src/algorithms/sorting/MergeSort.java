@@ -8,93 +8,78 @@ package algorithms.sorting;
 public class MergeSort {
     
     /**
-     * sortes an array in non-decreasing order using divide and conquer technique
-     * Complexity => Time/Space : O(nLogn)/O(n)
+     * divides the array into halves until 2 elements left
+     * and sort and merge each sub array.
      * 
-     * @param arr the array to be sorted
-     * @return the sorted array
+     * @param A the array to be sorted.
+     * @param start the left most index of the array.
+     * @param end the right most index of the array.
      */
-    public static int[] mergeSort(int[] arr) {
+    public static void mergeSort(int[] A, int start, int end) {
 
-        // base case: not enough elements in the array
-        if (arr.length < 2) {
-            return arr;
+        if (start < end) {
+            int mid = (int) Math.floor((start+end)/2);
+            // left sub array
+            mergeSort(A, start, mid);
+            // right sub array
+            mergeSort(A, mid+1, end);
+
+            merge(A, start, mid, end);
         }
-
-        int mid = arr.length / 2; // middle index 
-
-        // divide the array into left and right subarrays
-        int[]left = new int[mid];
-        int[] right = (arr.length % 2 == 0) ? new int[mid] : new int[mid+1]; 
-
-        // populate the subarrays
-        for (int i = 0; i < mid; i++) {
-            left[i] = arr[i];
-        }
-        for (int j = 0; j < right.length; j++) {
-            right[j] = arr[mid+j];
-        }
-
-        // recursive step: divide and pupulate the subarrays until arr.length = 1
-        left = mergeSort(left);
-        right = mergeSort(right);
-
-        return merge(left, right); // merged array
 
     }
 
     /**
-     * merges two arrays in non-decreasing order
-     * @param left left subarray
-     * @param right right subarray
-     * @return merged array of left and right subarrays
+     * sorts sub arrays from low <-> mid and mid <-> high and 
+     * merge them together.
+     * 
+     * @param A the array to be sorted.
+     * @param low the left most index of the sub array.
+     * @param mid the middle index of the sub array.
+     * @param high the right most index of the sub array.
      */
-    public static int[] merge(int[] left, int[] right) {
+    public static void merge(int[] A, int low, int mid, int high ) {
+        
+        int[] M = new int[high-low+1]; // to store sorted and merged elements 
 
-        // length of both arrays
-        int leftLen = left.length;
-        int rightLen = right.length;
+        int l = low; // left sub array index pointer
+        int r = mid+1; // right sub array index pointer
+        int m = 0; // merged array index pointer
 
-        int[] sorted = new int[leftLen + rightLen]; // to store the sorted array
-
-        int lI = 0, rI = 0, sI = 0; // left, right, and sorted arrays' index pointers
-
-        // elements exist in both left and right subarrays 
-        while (lI < leftLen && rI < rightLen) {
-
-            // case: left element is less than right element
-            if (left[lI] < right[rI]) {
-                sorted[sI++] = left[lI++]; // add left element into sorted array
-            }
-            // case: right element is either equal or less than left element
-            else {
-                sorted[sI++] = right[rI++]; // add right element into sorted array
+        // sort and merge until index out of bound
+        while (l <= mid && r <= high) {
+            if (A[l] < A[r]) {
+                M[m++] = A[l++];
+            } else {
+                M[m++] = A[r++];
             }
         }
 
-        // add all element of left array if exist
-        while (lI < leftLen) {
-            sorted[sI++] = left[lI++];
+        // add remaining elements
+        while (l <= mid) {
+            M[m++] = A[l++];
+        }
+        while (r <= high) {
+            M[m++] = A[r++];
+        }
+
+        // copy back to A
+        m = 0;
+        for (int i = low; i <= high; i++) {
+            A[i] = M[m++];
         }
         
-        // add all element of right array if exist
-        while (rI < rightLen) {
-            sorted[sI++] = right[rI++];
-        }
-
-        return sorted;
-
     }
 
     // Test
     public static void main(String[] args) {
         
-        int[] array = { 10, 14, 8, 11, 7, 16, 30, 25, 18};
+        int[] A = { 5, 1, 7, 3, 6, 2, 8, 4};
 
-        int[] sortedArray = mergeSort(array);
+        mergeSort(A, 0, A.length-1);
 
         // display sorted array
-        for (int e : sortedArray) {
+        for (int e : A) {
             System.out.print(e + " ");
         }
         System.out.println();
