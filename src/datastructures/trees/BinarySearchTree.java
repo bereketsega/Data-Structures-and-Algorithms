@@ -1,24 +1,43 @@
 package datastructures.trees;
 
+import datastructures.queues.NodeQueue;
+import datastructures.stacks.NodeStack;
+
 /**
- * Implementation of Binary Tree
+ * Implementation of Binary Search Tree.
  * 
  * @author Bereket Sega
  */
-public class BinaryTree { 
+public class BinarySearchTree { 
+    
+    class Node {  
+        int data;
+        Node left, right, parent;
+    
+        /**
+         * Node constructor sets data to val and left, right, parent to null
+         * @param val
+         */
+        Node(int val) {
+            data = val;
+            left = right = parent = null;
+        }
+        
+    }
     
     private Node root; 
 
     /**
-     * BinaryTree constructor sets root to null
+     * BinarySearchTree constructor sets root to null.
      */
-    BinaryTree() {
+    BinarySearchTree() {
         root = null;
     }
 
     /**
-     * Inserts a value into this tree
-     * @param val the value to be inserted
+     * Inserts a value into this tree.
+     * 
+     * @param val the value to be inserted.
      */
     public void put(int val) {
 
@@ -43,9 +62,10 @@ public class BinaryTree {
     }
 
     /**
-     * Finds the node with the value of val
-     * @param val the value of node to be found
-     * @return the node with val value or null if not found
+     * Finds the node with the value of val.
+     * 
+     * @param val the value of node to be found.
+     * @return the node with val value or null if not found.
      */
     public Node find(int val) {
 
@@ -71,8 +91,9 @@ public class BinaryTree {
     }
 
     /**
-     * Removes the node with val value
-     * @param val value of node to be removed
+     * Removes the node with val value.
+     * 
+     * @param val value of node to be removed.
      */
     public void remove(int val) {
         
@@ -112,8 +133,9 @@ public class BinaryTree {
     }
 
     /**
-     * Helper method to remove a node with no child
-     * @param removeNode the node to be removed
+     * Helper method to remove a node with no child.
+     * 
+     * @param removeNode the node to be removed.
      */
     private void removeNoChild(Node removeNode) {
         if (removeNode.data < removeNode.parent.data) {
@@ -125,8 +147,9 @@ public class BinaryTree {
     }
 
     /**
-     * Helper method to removed a node with one child
-     * @param removeNode the node to be removed
+     * Helper method to removed a node with one child.
+     * 
+     * @param removeNode the node to be removed.
      */
     private void removeOneChild(Node removeNode) {
         
@@ -157,8 +180,9 @@ public class BinaryTree {
     }
 
     /**
-     * Helper method to removed a node with two children
-     * @param removeNode the node to be removed
+     * Helper method to removed a node with two children.
+     * 
+     * @param removeNode the node to be removed.
      */
     private void removeTwoChildren(Node removeNode) {
 
@@ -205,8 +229,9 @@ public class BinaryTree {
     }
 
     /**
-     * Prints the tree by preorder traversal
-     * @param root the root of this tree
+     * Prints the tree by preorder traversal.
+     * 
+     * @param root the root of this tree.
      */
     public void preOrder(Node root) {
         if (root != null) {
@@ -217,8 +242,9 @@ public class BinaryTree {
     }
 
     /**
-     * Displays the tree by inorder traversal
-     * @param root the root of this tree
+     * Displays the tree by in-order traversal.
+     * 
+     * @param root the root of this tree.
      */
     public void inOrder(Node root) {
         if (root != null) {
@@ -229,8 +255,9 @@ public class BinaryTree {
     }
 
     /**
-     * Displays the tree by postorder traversal
-     * @param root the root of this tree
+     * Displays the tree by postorder traversal.
+     * 
+     * @param root the root of this tree.
      */
     public void postOrder(Node root) {
         if (root != null) {
@@ -241,8 +268,49 @@ public class BinaryTree {
     }
 
     /**
-     * Returns the root of this tree
-     * @return the root of this tree or null if it doesn't exist
+     * Depth first search traversal to display tree nodes.
+     * 
+     * @param root the starting node to traverse.
+     */
+    public void dfs(Node root) {
+        NodeStack<Node>  order = new NodeStack<>();
+        order.push(root);
+        while (!order.isEmpty()) {
+            Node curr = order.pop();
+            System.out.print(curr.data + " ");
+            if (curr.right != null) {
+                order.push(curr.right);
+            }
+            if (curr.left != null) {
+                order.push(curr.left);
+            }
+        }
+    }
+
+    /**
+     * Breadth first search traversal to display tree nodes.
+     * 
+     * @param root the starting node to traverse.
+     */
+    public void bfs(Node root) {
+        NodeQueue<Node> order = new NodeQueue<>();
+        order.enqueue(root);
+        while(!order.isEmpty()) {
+            Node curr = order.dequeue();
+            System.out.print(curr.data + " ");
+            if (curr.left != null) {
+                order.enqueue(curr.left);
+            }
+            if (curr.right != null) {
+                order.enqueue(curr.right);
+            }
+        }
+    }
+
+    /**
+     * Returns the root of this tree.
+     * 
+     * @return the root of this tree or null if it doesn't exist.
      */
     public int peek() {
         return root != null ? root.data : null;
@@ -250,35 +318,21 @@ public class BinaryTree {
 
     // Test
     public static void main(String[] args) {
-        BinaryTree bt = new BinaryTree();
-                              bt.put(50);
-                  bt.put(25);
-                                           bt.put(100);
-        bt.put(10);
-                        bt.put(32);
-                                                   bt.put(400);
-                  bt.put(26);
-                                bt.put(46);
-                            
-      
-        bt.remove(32);
+        BinarySearchTree bt = new BinarySearchTree();
+                                bt.put(5);
+                bt.put(2);
+                                           bt.put(9);
+        bt.put(1);
+                        bt.put(4);
+                                                   bt.put(19);
+                                     bt.put(7);
+                           
         bt.inOrder(bt.root);
+        bt.dfs(bt.root);
+        System.out.println();
+        bt.bfs(bt.root);
     }
 
 }
 
-class Node {
-    
-    int data;
-    Node left, right, parent;
 
-    /**
-     * Node constructor sets data to val and left, right, parent to null
-     * @param val
-     */
-    Node(int val) {
-        data = val;
-        left = right = parent = null;
-    }
-    
-}

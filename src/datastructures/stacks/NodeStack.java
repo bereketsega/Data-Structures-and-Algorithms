@@ -13,7 +13,7 @@ public class NodeStack <T> {
     /**
      * Stack Constructor
      */
-    NodeStack() {
+    public NodeStack() {
         items = 0;
     }
 
