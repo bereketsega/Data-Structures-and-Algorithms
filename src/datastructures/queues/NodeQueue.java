@@ -14,7 +14,7 @@ public class NodeQueue <T> {
     /**
      * NodeQueue constructor
      */
-    NodeQueue() {
+    public NodeQueue() {
         items = 0;
     }
 
